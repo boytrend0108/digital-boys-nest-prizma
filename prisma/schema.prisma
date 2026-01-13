@@ -44,8 +44,70 @@ model Movie {
   title     String
   description String?
   releaseYear  Int @map("release_year")
+  rating     Float? @default(0.0)
+  genre     Genre @default(DRAMA)
+  isAvailable Boolean @default(true) @map("is_available")
+
+// one-to-many relation with Review
+  reviews   Review[] @relation("movie_reviews")
+// many-to-many relation with Actor
+  actors    Actor[] @relation("movie_actors")
+// one-to-one relation with Poster
+  poster   Poster @relation(fields: [posterId], references: [id])
+  posterId String  @unique @map("poster_id")
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("movies")
+  @@index([releaseYear], name: "idx_release_year")
+}
+model Poster {
+  id        String   @default(uuid()) @id
+
+  imageUrl String @map("image_url")
+
+// one-to-one relation with Movie
+  movie Movie? @relation
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  @@map("posters")
+}
+model Review {
+  id        String   @default(uuid()) @id
+
+  text String @default("")
+  rating Decimal @default(0.0)
+
+// one-to-many relation with Movie
+  movie Movie @relation("movie_reviews", fields: [movieId], references: [id], onDelete: Cascade)
+  movieId String @map("movie_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("reviews")
+}
+model Actor {
+  id        String   @default(uuid()) @id
+  name String @default("")
+
+// many-to-many relation with Movie
+  movies Movie[] @relation("movie_actors")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("actors")
+}
+
+enum Genre {
+  ACTION
+  COMEDY
+  DRAMA
+  HORROR
+  ROMANCE
+  SCIFI
+  @@map("enum_genres")
 }
