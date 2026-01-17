@@ -90,7 +90,7 @@ model Review {
   @@map("reviews")
 }
 model Actor {
-  id        String   @default(uuid()) @id
+  id  String   @default(uuid()) @id
   name String @default("")
 
 // many-to-many relation with Movie
