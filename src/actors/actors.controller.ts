@@ -1,14 +1,23 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UsePipes,
+} from '@nestjs/common';
 import { ActorsService } from './actors.service';
 import { CreateActorDto } from './dto/create-actor.dto';
 import { UpdateActorDto } from './dto/update-actor.dto';
+import { StringToLowercasePipe } from 'src/common/pipes/string-to-lowercase.pipe';
 
 @Controller('actors')
 export class ActorsController {
   constructor(private readonly actorsService: ActorsService) {}
 
   @Post()
-  async create(@Body() dto: CreateActorDto) {
+  async create(@Body(StringToLowercasePipe) dto: CreateActorDto) {
     return this.actorsService.create(dto);
   }
 
