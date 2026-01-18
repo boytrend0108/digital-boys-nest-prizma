@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { ActorsModule } from './actors/actors.module';
 import { PrismaModule } from './prisma.module';
-import { LoggingMiddleware } from './middlewares/logging.middelware';
+import { LoggingMiddleware } from './common/middlewares/logging.middelware';
 
 @Module({
   imports: [
