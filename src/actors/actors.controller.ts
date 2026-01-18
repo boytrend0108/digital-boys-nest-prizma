@@ -11,6 +11,7 @@ import { ActorsService } from './actors.service';
 import { CreateActorDto } from './dto/create-actor.dto';
 import { UpdateActorDto } from './dto/update-actor.dto';
 import { StringToLowercasePipe } from 'src/common/pipes/string-to-lowercase.pipe';
+import { UserAgent } from 'src/common/decorators/user-agent.decorator';
 
 @Controller('actors')
 export class ActorsController {
@@ -22,7 +23,8 @@ export class ActorsController {
   }
 
   @Get()
-  async findAll() {
+  async findAll(@UserAgent() userAgent: string) {
+    console.log('User-Agent:', userAgent);
     return this.actorsService.findAll();
   }
 
